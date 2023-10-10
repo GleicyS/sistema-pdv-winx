@@ -1,3 +1,6 @@
+const knex = require("../conexao");
+const bcrypt = require("bcrypt");
+
 const cadastrarUsuario = async (req, res) => {
   const { nome, email, senha } = req.body;
 
@@ -7,6 +10,18 @@ const cadastrarUsuario = async (req, res) => {
     if (usuarioEncontrado) {
       return res.status(400).json({ mensagem: "O email já existe" });
     }
+
+    const senhaCriptografada = await bcrypt.hash(senha, 10);
+
+    const usuario = await knex("usuarios")
+      .insert({
+        nome,
+        email,
+        senha: senhaCriptografada,
+      })
+      .returning("*");
+
+    const { senha, ...usuarioCadastrado } = usuario[0];
 
     return res.status(201).json(usuarioCadastrado);
   } catch (error) {
