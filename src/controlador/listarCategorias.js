@@ -2,7 +2,7 @@ const knex = require("../conexao");
 
 const listarCategorias = async (req, res) => {
   try {
-    const categorias = await knex.select("categorias").returning("*");
+    const categorias = await knex("categorias");
     return res.json(categorias);
   } catch (error) {
     console.log(error.message);
