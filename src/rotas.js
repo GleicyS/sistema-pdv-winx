@@ -1,7 +1,7 @@
 const express = require("express");
 
-const cadastrarUsuario = require("./controlado/cadastrarUsuarios.js");
-const listarCategorias = require("./controlado/istarCategorias.js");
+const cadastrarUsuario = require("./controlador/cadastroUsuarios");
+const listarCategorias = require("./controlador/listarCategorias");
 
 const rotas = express();
 
