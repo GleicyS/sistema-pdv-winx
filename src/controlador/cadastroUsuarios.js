@@ -21,7 +21,7 @@ const cadastrarUsuario = async (req, res) => {
       })
       .returning("*");
 
-    const { senha, ...usuarioCadastrado } = usuario[0];
+    const { senha: _, ...usuarioCadastrado } = usuario[0];
 
     return res.status(201).json(usuarioCadastrado);
   } catch (error) {
