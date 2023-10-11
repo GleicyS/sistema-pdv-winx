@@ -7,10 +7,6 @@ const senha_JWT = require('../senha_JWT');
 const loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
 
-    if (!email || !senha) {
-        return res.status(400).json({ mensagem: "Os campos devem ser informados.", })
-    };
-
     try {
 
         const usuarioEncontrado = await knex('usuarios').where({ email }).first();
