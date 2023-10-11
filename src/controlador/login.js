@@ -1,31 +1,29 @@
 const knex = require("../conexao");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const passwordJWT = require('../passwordJWT');
+const senha_JWT = require('../senha_JWT');
 
 
 const loginUsuario = async (req, res) => {
     const { email, senha } = req.body;
 
+    if (!email || !senha) {
+        return res.status(400).json({ mensagem: "Os campos devem ser informados.", })
+    };
+
     try {
-        if (!email || !senha) return res.status(400).json
-            ({ mensagem: "Os campos devem ser informados.", });
 
-        const usuarioExistente = await knex('usuarios').where('email', email).first();
+        const usuarioEncontrado = await knex('usuarios').where({ email }).first();
 
-        if (!usuarioExistente) return res.status(401).json
-            ({ mensagem: "Usuário e/ou senha inválido(s)." });
+        if (!usuarioEncontrado) return res.status(401).json({ mensagem: "Usuário e/ou senha inválido(s)." });
 
-        const senhaValida = await bcrypt.compare(senha, usuarioExistente.senha);
+        const senhaValida = await bcrypt.compare(senha, usuarioEncontrado.senha);
 
-        if (!senhaValida) return res.status(401).json
-            ({ mensagem: "Usuário e/ou senha inválido(s)." });
+        if (!senhaValida) return res.status(401).json({ mensagem: "Usuário e/ou senha inválido(s)." });
 
-        const token = jwt.sign({ id: usuarioExistente.id }, passwordJWT, {
-            expiresIn: "1d",
-        });
+        const token = jwt.sign({ id: usuarioEncontrado.id }, senha_JWT, { expiresIn: "1d", });
 
-        const { senha: _, ...usuario } = usuarioExistente;
+        const { senha: _, ...usuario } = usuarioEncontrado;
 
         return res.status(200).json({
             usuario,
