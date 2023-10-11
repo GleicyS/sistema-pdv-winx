@@ -6,16 +6,20 @@ const loginUsuario = require("./controlador/login");
 const validarToken = require("./intermediarios/validarToken");
 const atualizarUsuario = require("./controlador/atualizarUsuario");
 const detalharUsuario = require("./controlador/detalharUsuario");
+const validarRequisicao = require("./intermediarios/validarRequisicao")
+const usuarioSchema = require('./validacoes/usuarios');
+const loginSchema = require('./validacoes/loginSchema');
+
 
 const rotas = express();
 
-rotas.post("/usuarios", cadastrarUsuario);
+rotas.post("/usuario", validarRequisicao(usuarioSchema), cadastrarUsuario);
 rotas.get("/categorias", listarCategorias);
-rotas.post("/login", loginUsuario);
+rotas.post("/login", validarRequisicao(loginSchema), loginUsuario);
 
 rotas.use(validarToken);
 
 rotas.get("/usuario", detalharUsuario);
-rotas.put("/usuario", atualizarUsuario);
+rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
 
 module.exports = rotas;
