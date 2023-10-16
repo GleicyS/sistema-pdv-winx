@@ -1,3 +1,3 @@
 # sistema-pdv-winx
 
-Link do deploy: https://drab-cyan-drill-fez.cyclic.app/
+Link da API: https://drab-cyan-drill-fez.cyclic.app/
