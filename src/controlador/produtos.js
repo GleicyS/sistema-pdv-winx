@@ -2,7 +2,7 @@ const knex = require("../conexao");
 
 const editarDadosProduto = async (req, res) => {
   const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
-  const { id } = req.usuario;
+  const { id } = req.params;
 
   try {
     const existeProduto = await knex("produtos").where({ id }).first();
