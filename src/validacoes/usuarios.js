@@ -1,7 +1,7 @@
 const joi = require('joi')
 
 const usuarioSchema = joi.object({
-    nome: joi.string().required().messages({
+    nome: joi.string().trim().required().messages({
         'any.required': 'O campo nome é obrigatório',
         'string.empty': 'O campo nome é obrigatório',
     }),
@@ -10,7 +10,7 @@ const usuarioSchema = joi.object({
         'string.empty': 'O campo email é obrigatório',
         'string.email': 'O campo email é precisa ter um formato válido',
     }),
-    senha: joi.string().required().messages({
+    senha: joi.string().trim().required().messages({
         'any.required': 'O campo senha é obrigatório',
         'string.empty': 'O campo senha é obrigatório',
     })
