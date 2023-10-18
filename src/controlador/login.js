@@ -1,34 +1,40 @@
 const knex = require("../conexao");
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const senha_JWT = require('../senha_JWT');
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const senha_JWT = require("../senha_JWT");
 
 const loginUsuario = async (req, res) => {
-    const { email, senha } = req.body;
+  const { email, senha } = req.body;
 
-    try {
+  try {
+    const usuarioEncontrado = await knex("usuarios").where({ email }).first();
 
-        const usuarioEncontrado = await knex('usuarios').where({ email }).first();
+    if (!usuarioEncontrado)
+      return res
+        .status(401)
+        .json({ mensagem: "Usuário e/ou senha inválido(s)." });
 
-        if (!usuarioEncontrado) return res.status(401).json({ mensagem: "Usuário e/ou senha inválido(s)." });
+    const senhaValida = await bcrypt.compare(senha, usuarioEncontrado.senha);
 
-        const senhaValida = await bcrypt.compare(senha, usuarioEncontrado.senha);
+    if (!senhaValida)
+      return res
+        .status(401)
+        .json({ mensagem: "Usuário e/ou senha inválido(s)." });
 
-        if (!senhaValida) return res.status(401).json({ mensagem: "Usuário e/ou senha inválido(s)." });
+    const token = jwt.sign({ id: usuarioEncontrado.id }, senha_JWT, {
+      expiresIn: "1d",
+    });
 
-        const token = jwt.sign({ id: usuarioEncontrado.id }, senha_JWT, { expiresIn: "1d", });
+    const { senha: _, ...usuario } = usuarioEncontrado;
 
-        const { senha: _, ...usuario } = usuarioEncontrado;
-
-        return res.status(200).json({
-            usuario,
-            token
-        });
-
-    } catch (error) {
-        return res.status(500).json({ mensagem: "Erro interno do servidor" });
-    };
+    return res.status(200).json({
+      usuario,
+      token,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+  }
 };
 
 module.exports = loginUsuario;
