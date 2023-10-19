@@ -6,11 +6,13 @@ const listarProdutos = async (req, res) => {
     try {
         const produtos = await knex('produtos').where((query) => {
             if (categoria_id) {
-                const { categoria_id } = req.params;
-                return query.where('categoria_id', 'ilike', `%${categoria_id}%`)
+                return query.where('categoria_id', 'ilike', `%${categoria_id}%`);
+            } else {
+                return query;
             }
-        })
-        return res.status(200).json(produtos);
+        });
+
+        return res.json(produtos);
 
     } catch (error) {
         return res.status(500).json({ mensagem: "Erro interno do servidor" });
