@@ -38,9 +38,3 @@ const cadastrarCliente = async (req, res) => {
 
 module.exports = cadastrarCliente;
 
-// "cep": "08657062",
-// "rua": "Boas novas",
-// "numero": "12",
-// "bairro": "Pinheiros",
-// "cidade": "São Paulo",
-// "estado": "SP"
