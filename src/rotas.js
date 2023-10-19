@@ -27,7 +27,7 @@ rotas.use(validarToken);
 
 rotas.get("/usuario", detalharUsuario);
 rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
-rotas.put("/produto/:id", editarDadosProduto);
+rotas.put("/produto/:id", validarRequisicao(produtoSchema), editarDadosProduto);
 
 rotas.post("/cliente", validarRequisicao(clienteSchema), cadastrarCliente);
 rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
