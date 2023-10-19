@@ -17,7 +17,11 @@ const produtoSchema = require("./validacoes/produtoSchema");
 const listarClientes = require("./controlador/listarClientes")
 const listarProdutos = require("./controlador/listarProdutos")
 
-const editarDadosProduto = require("./controlador/produtos");
+const {
+  editarDadosProduto,
+  detalharProduto,
+  excluirProduto,
+} = require("./controlador/produtos");
 
 const rotas = express();
 
@@ -29,9 +33,11 @@ rotas.use(validarToken);
 
 rotas.get("/usuario", detalharUsuario);
 rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
-rotas.put("/produto/:id", editarDadosProduto);
 
 rotas.get("/cliente", listarClientes);
+rotas.put("/produto/:id", validarRequisicao(produtoSchema), editarDadosProduto);
+rotas.get("/produto/:id", detalharProduto);
+rotas.delete("/produto/:id", excluirProduto);
 rotas.post("/cliente", validarRequisicao(clienteSchema), cadastrarCliente);
 rotas.get("/produto", listarProdutos);
 rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
