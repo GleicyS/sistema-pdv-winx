@@ -30,9 +30,10 @@ const editarDadosProduto = async (req, res) => {
       return res.status(400).json("O produto não foi atualizado");
     }
 
-    return res.status(204).send();
+    return res
+      .status(200)
+      .json({ mensagem: "Atualização realizada com sucesso" });
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
