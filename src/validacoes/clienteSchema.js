@@ -16,12 +16,12 @@ const clienteSchema = joi.object({
         'string.min': 'Campo deve ter no mínimo 11 caracteres',
         'string.max': 'Campo deve ter no mínimo 2 caracteres',
     }),
-    cep: joi.string().allow(''),
-    rua: joi.string().allow(''),
-    numero: joi.string().allow(''),
-    bairro: joi.string().allow(''),
-    cidade: joi.string().allow(''),
-    estado: joi.string(),
+    cep: joi.string().allow(null).messages({ 'string.empty': "O campo 'CEP' é opcional. Se você deseja informar um cep, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
+    rua: joi.string().allow(null).messages({ 'string.empty': "O campo 'rua' é opcional. Se você deseja informar um rua, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
+    numero: joi.string().allow(null).messages({ 'string.empty': "O campo 'número' é opcional. Se você deseja informar um número, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
+    bairro: joi.string().allow(null).messages({ 'string.empty': "O campo 'bairro' é opcional. Se você deseja informar um bairro, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
+    cidade: joi.string().allow(null).messages({ 'string.empty': "O campo 'cidade' é opcional. Se você deseja informar um cidade, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
+    estado: joi.string().allow(null).messages({ 'string.empty': "O campo 'Estado' é opcional. Se você deseja informar um estado, por favor, escreva uma opção válida. Caso contrário, você pode deixá-lo null." }),
 })
 
 module.exports = clienteSchema
