@@ -9,6 +9,9 @@ const detalharUsuario = require("./controlador/detalharUsuario");
 const validarRequisicao = require("./intermediarios/validarRequisicao");
 const usuarioSchema = require("./validacoes/usuarios");
 const loginSchema = require("./validacoes/loginSchema");
+const editarCliente = require("./controlador/editarCliente");
+const detalharCliente = require("./controlador/detalharCliente");
+
 
 const editarDadosProduto = require("./controlador/produtos");
 
@@ -23,5 +26,8 @@ rotas.use(validarToken);
 rotas.get("/usuario", detalharUsuario);
 rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
 rotas.put("/produto/:id", editarDadosProduto);
+
+rotas.put('/cliente/:id', validarRequisicao(clienteSchema), editarCliente)
+rotas.get('/cliente/:id', detalharCliente)
 
 module.exports = rotas;
