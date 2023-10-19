@@ -33,7 +33,7 @@ rotas.put("/produto/:id", editarDadosProduto);
 
 rotas.get("/cliente", listarClientes);
 rotas.post("/cliente", validarRequisicao(clienteSchema), cadastrarCliente);
-rotas.get("/cliente", listarProdutos);
+rotas.get("/produto", listarProdutos);
 rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
 
 module.exports = rotas;
