@@ -38,4 +38,24 @@ const editarDadosProduto = async (req, res) => {
   }
 };
 
-module.exports = editarDadosProduto;
+const detalharProduto = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const existeProduto = await knex("produtos").where({ id }).first();
+
+    if (!existeProduto) {
+      return res.status(404).json({ mensagem: "Produto não encontrado" });
+    }
+
+    const produtos = await knex("produtos").where({ id }).first();
+    return res.status(200).json(produtos);
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+  }
+};
+
+module.exports = {
+  editarDadosProduto,
+  detalharProduto,
+};
