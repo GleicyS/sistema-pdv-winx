@@ -55,7 +55,30 @@ const detalharProduto = async (req, res) => {
   }
 };
 
+const excluirProduto = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const produto = await knex("produtos").where({ id }).first();
+
+    if (!produto) {
+      return res.status(404).json("Produto não encontrado");
+    }
+
+    const produtoExcluido = await knex("produtos").where({ id }).del();
+
+    if (produtoExcluido === 0) {
+      return res.status(400).json("O produto não foi excluido");
+    }
+
+    return res.status(200).json("Produto excluido com sucesso");
+  } catch (error) {
+    return res.status(400).json(error.message);
+  }
+};
+
 module.exports = {
   editarDadosProduto,
   detalharProduto,
+  excluirProduto,
 };
