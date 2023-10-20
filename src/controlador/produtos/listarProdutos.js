@@ -1,4 +1,4 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const listarProdutos = async (req, res) => {
     const { categoria_id } = req.query;

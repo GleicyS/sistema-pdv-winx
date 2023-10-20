@@ -1,4 +1,4 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const cadastrarCliente = async (req, res) => {
     const { nome, email, cpf, cep, rua, numero, bairro, cidade, estado } = req.body;

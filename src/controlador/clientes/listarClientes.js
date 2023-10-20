@@ -1,8 +1,8 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const listarClientes = async (req, res) => {
   try {
-    const clientes = await knex('clientes').select('nome', 'email', 'cpf', knex.raw(`COALESCE(cep, 'Não informado') as cep, 
+    const clientes = await knex('clientes').select('id', 'nome', 'email', 'cpf', knex.raw(`COALESCE(cep, 'Não informado') as cep, 
     COALESCE(rua, 'Não informado') as rua,
    COALESCE(numero, 'Não informado') as numero, COALESCE(bairro, 'Não informado') as bairro, COALESCE(cidade, 'Não informado') as cidade, 
    COALESCE(estado, 'Não informado') as estado`))

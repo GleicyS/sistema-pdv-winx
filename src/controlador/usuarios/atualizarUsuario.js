@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const atualizarUsuario = async (req, res) => {
     const { id } = req.usuario;

@@ -1,7 +1,7 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const senha_JWT = require("../senha_JWT");
+const senha_JWT = require("../../senha_JWT");
 
 const loginUsuario = async (req, res) => {
   const { email, senha } = req.body;
