@@ -1,4 +1,4 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const editarDadosProduto = async (req, res) => {
   const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
