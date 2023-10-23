@@ -13,16 +13,16 @@ const editarCliente = require("./controlador/clientes/editarCliente");
 const detalharCliente = require("./controlador/clientes/detalharCliente");
 const clienteSchema = require("./validacoes/clienteSchema");
 const cadastrarCliente = require("./controlador/clientes/cadastrarClientes");
-const listarClientes = require("./controlador/clientes/listarClientes")
+const listarClientes = require("./controlador/clientes/listarClientes");
 const produtoSchema = require("./validacoes/produtoSchema");
 const cadastrarProduto = require("./controlador/produtos/cadastrarProdutos");
-const listarProdutos = require("./controlador/produtos/listarProdutos")
-
+const listarProdutos = require("./controlador/produtos/listarProdutos");
 const {
   editarDadosProduto,
   detalharProduto,
   excluirProduto,
 } = require("./controlador/produtos/produtos");
+const cadastrarPedido = require("./controlador/cadastrarPedido");
 
 const rotas = express();
 
@@ -43,7 +43,9 @@ rotas.delete("/produto/:id", excluirProduto);
 
 rotas.post("/cliente", validarRequisicao(clienteSchema), cadastrarCliente);
 rotas.get("/cliente", listarClientes);
-rotas.put('/cliente/:id', validarRequisicao(clienteSchema), editarCliente)
-rotas.get('/cliente/:id', detalharCliente)
+rotas.put("/cliente/:id", validarRequisicao(clienteSchema), editarCliente);
+rotas.get("/cliente/:id", detalharCliente);
+
+rotas.post("/pedido", cadastrarPedido);
 
 module.exports = rotas;
