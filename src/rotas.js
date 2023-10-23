@@ -23,6 +23,7 @@ const {
   excluirProduto,
 } = require("./controlador/produtos/produtos");
 const cadastrarPedido = require("./controlador/cadastrarPedido");
+const pedidoSchema = require("./validacoes/pedidoSchema");
 
 const rotas = express();
 
@@ -46,6 +47,6 @@ rotas.get("/cliente", listarClientes);
 rotas.put("/cliente/:id", validarRequisicao(clienteSchema), editarCliente);
 rotas.get("/cliente/:id", detalharCliente);
 
-rotas.post("/pedido", cadastrarPedido);
+rotas.post("/pedido", validarRequisicao(pedidoSchema), cadastrarPedido);
 
 module.exports = rotas;
