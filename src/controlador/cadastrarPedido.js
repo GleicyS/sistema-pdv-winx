@@ -4,10 +4,18 @@ const cadastrarPedido = async (req, res) => {
   const { cliente_id, observacao, pedido_produtos, categoria_id } = req.body;
 
   try {
-    const cpfEncontrado = await knex("clientes").where({ cpf }).first();
+    const clienteExiste = await knex("clientes")
+      .where({ id: cliente_id })
+      .first();
 
-    if (cpfEncontrado) {
-      return res.status(400).json({ mensagem: "O cpf já existe" });
+    if (!clienteExiste) {
+      return res.status(404).json({ mensagem: "Cliente não encontrado" });
+    }
+
+    const existeProduto = await knex("produtos").where({ id }).first();
+
+    if (!existeProduto) {
+      return res.status(404).json({ mensagem: "Produto não encontrado" });
     }
 
     await knex("produtos").insert({
