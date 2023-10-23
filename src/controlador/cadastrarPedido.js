@@ -1,7 +1,7 @@
 const knex = require("../../conexao");
 
 const cadastrarPedido = async (req, res) => {
-  const { cliente_id, observacao, pedido_produtos, categoria_id } = req.body;
+  const { cliente_id, observacao, pedido_produtos } = req.body;
 
   try {
     const clienteExiste = await knex("clientes")
@@ -18,14 +18,13 @@ const cadastrarPedido = async (req, res) => {
       return res.status(404).json({ mensagem: "Produto não encontrado" });
     }
 
-    await knex("produtos").insert({
+    await knex("pedidos").insert({
       cliente_id,
       observacao,
       pedido_produtos,
-      categoria_id,
     });
 
-    return res.status(201).json({ mensagem: "Produto cadastrado com sucesso" });
+    return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
   } catch (error) {
     return res
       .status(500)
