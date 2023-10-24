@@ -2,8 +2,8 @@ const joi = require("joi");
 
 const pedidoSchema = joi.object({
   cliente_id: joi.number().required().messages({
-    "any.required": "O campo categoria_id é obrigatório",
-    "number.base": "O campo categoria_id deve ser uma number",
+    "any.required": "O campo cliente_id é obrigatório",
+    "number.base": "O campo cliente_id deve ser um number",
   }),
   observacao: joi.string().messages({
     "string.empty": "O campo observação está vazio",
