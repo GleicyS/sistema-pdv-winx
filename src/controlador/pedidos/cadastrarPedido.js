@@ -41,11 +41,24 @@ const cadastrarPedido = async (req, res) => {
       valorTotal += produtoExiste.valor * quantidade_produto;
     }
 
-    const cadastroPedido = await knex("pedidos").insert({
-      cliente_id: id,
-      observacao,
-      valor_total: valorTotal,
-    });
+    const [cadastroPedido] = await knex("pedidos")
+      .insert({
+        cliente_id: id,
+        observacao,
+        valor_total: valorTotal,
+      })
+      .returning("id");
+
+    const pedidoId = cadastroPedido;
+
+    for (const produto of produtosValidos) {
+      await knex("pedido_produtos").insert({
+        pedido_id: pedidoId,
+        produto_id,
+        quantidade_produto: produto.quantidade_produto,
+        valor_produto: produto.valor_produto,
+      });
+    }
 
     return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
   } catch (error) {
