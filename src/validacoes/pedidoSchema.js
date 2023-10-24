@@ -14,7 +14,7 @@ const pedidoSchema = joi.object({
       joi.object({
         produto_id: joi.number().required().messages({
           "any.required": "O campo produto_id é obrigatório",
-          "number.base": "O campo produto_idd deve ser um número",
+          "number.base": "O campo produto_id deve ser um número",
         }),
         quantidade_produto: joi.number().required().messages({
           "any.required": "O campo quantidade_produto é obrigatório",
