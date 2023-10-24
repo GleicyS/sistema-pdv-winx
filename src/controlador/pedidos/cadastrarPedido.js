@@ -43,7 +43,7 @@ const cadastrarPedido = async (req, res) => {
 
     const [cadastroPedido] = await knex("pedidos")
       .insert({
-        cliente_id: id,
+        cliente_id,
         observacao,
         valor_total: valorTotal,
       })
