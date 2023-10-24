@@ -22,8 +22,8 @@ const {
   detalharProduto,
   excluirProduto,
 } = require("./controlador/produtos/produtos");
-const cadastrarPedido = require("./controlador/cadastrarPedido");
 const pedidoSchema = require("./validacoes/pedidoSchema");
+const cadastrarPedido = require("./controlador/pedidos/cadastrarPedido");
 
 const rotas = express();
 
