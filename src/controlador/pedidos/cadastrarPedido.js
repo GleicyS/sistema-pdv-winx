@@ -13,14 +13,14 @@ const cadastrarPedido = async (req, res) => {
       return res.status(404).json({ mensagem: "Cliente não encontrado" });
     }
 
+    const produtosValidos = [];
+
     for (const pedido_produto of pedido_produtos) {
       const { produto_id, quantidade_produto } = pedido_produto;
 
       const produtoExiste = await knex("produtos")
         .where({ id: produto_id })
         .first();
-
-      console.log(produtoExiste);
 
       if (!produtoExiste) {
         return res.status(404).json({ mensagem: "Produto não encontrado." });
@@ -31,7 +31,13 @@ const cadastrarPedido = async (req, res) => {
           .status(400)
           .json({ mensagem: "Quantidade em estoque insulficiente" });
       }
+
+      produtosValidos.push({
+        produto_id,
+        quantidade_produto,
+      });
     }
+
     return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
   } catch (error) {
     return res.status(500).json({
