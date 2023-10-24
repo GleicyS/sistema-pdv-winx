@@ -13,10 +13,27 @@ const cadastrarPedido = async (req, res) => {
       return res.status(404).json({ mensagem: "Cliente não encontrado" });
     }
 
-    const existeProduto = await knex("produtos").where({ id }).first();
+    const produtosValidos = [];
+    for (const pedido_produto of pedido_produtos) {
+      const { produto_id, quantidade_produto } = pedido_produto;
 
-    if (!existeProduto) {
-      return res.status(404).json({ mensagem: "Produto não encontrado" });
+      const produto = await knex("produtos").where({ id: produto_id }).first();
+      if (!produto) {
+        return res
+          .status(404)
+          .json({ message: `Produto com ID ${produto_id} não encontrado.` });
+      }
+
+      if (quantidade_produto > produto.estoque) {
+        return res.status(400).json({
+          message: `Quantidade em estoque insuficiente para o produto com ID ${produto_id}.`,
+        });
+      }
+
+      produtosValidos.push({
+        produto_id,
+        quantidade_produto,
+      });
     }
 
     await knex("pedidos").insert({
