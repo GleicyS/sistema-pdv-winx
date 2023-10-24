@@ -43,6 +43,21 @@ CREATE TABLE produtos (
   categoria_id INTEGER REFERENCES categorias(id)
 );
 
+CREATE TABLE pedidos (
+	id SERIAL PRIMARY KEY,
+  cliente_id INTEGER NOT NULL REFERENCES clientes(id),
+  observacao TEXT,
+  valor_total INTEGER NOT NULL
+);
 
+CREATE TABLE pedido_produtos (
+	id SERIAL PRIMARY KEY,
+  pedido_id INTEGER NOT NULL REFERENCES pedidos(id),
+  produto_id INTEGER NOT NULL REFERENCES produtos(id),
+  quantidade_produto INTEGER NOT NULL,
+  valor_produto INTEGER NOT NULL
+);
+
+ALTER TABLE produtos ADD COLUMN produto_imagem TEXT
 
 
