@@ -14,6 +14,7 @@ const cadastrarPedido = async (req, res) => {
     }
 
     const produtosValidos = [];
+    let valorTotal = 0;
 
     for (const pedido_produto of pedido_produtos) {
       const { produto_id, quantidade_produto } = pedido_produto;
@@ -27,16 +28,24 @@ const cadastrarPedido = async (req, res) => {
       }
 
       if (quantidade_produto > produtoExiste.quantidade_estoque) {
-        return res
-          .status(400)
-          .json({ mensagem: "Quantidade em estoque insulficiente" });
+        return res.status(400).json({
+          mensagem: `Quantidade em estoque insuficiente do produto de id ${produtoExiste.id}`,
+        });
       }
 
       produtosValidos.push({
-        produto_id,
+        produto_id: produtoExiste.produto_id,
         quantidade_produto,
+        valor_produto: produtoExiste.valor,
       });
+      valorTotal += produtoExiste.valor * quantidade_produto;
     }
+
+    const cadastroPedido = await knex("pedidos").insert({
+      cliente_id: id,
+      observacao,
+      valor_total: valorTotal,
+    });
 
     return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
   } catch (error) {
