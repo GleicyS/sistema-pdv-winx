@@ -13,6 +13,25 @@ const cadastrarPedido = async (req, res) => {
       return res.status(404).json({ mensagem: "Cliente não encontrado" });
     }
 
+    for (const pedido_produto of pedido_produtos) {
+      const { produto_id, quantidade_produto } = pedido_produto;
+
+      const produtoExiste = await knex("produtos")
+        .where({ id: produto_id })
+        .first();
+
+      console.log(produtoExiste);
+
+      if (!produtoExiste) {
+        return res.status(404).json({ mensagem: "Produto não encontrado." });
+      }
+
+      if (quantidade_produto > produtoExiste.quantidade_estoque) {
+        return res
+          .status(400)
+          .json({ mensagem: "Quantidade em estoque insulficiente" });
+      }
+    }
     return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
   } catch (error) {
     return res.status(500).json({
