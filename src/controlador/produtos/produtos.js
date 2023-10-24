@@ -1,4 +1,5 @@
 const knex = require("../../conexao");
+const excluirImagem = require("../../servicos-upload/uploadImagens");
 
 const editarDadosProduto = async (req, res) => {
   const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
@@ -59,11 +60,21 @@ const excluirProduto = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const produto = await knex("produtos").where({ id }).first();
+    const produtoEncontrado = await knex("produtos").where({ id }).first();
 
-    if (!produto) {
+    if (!produtoEncontrado) {
       return res.status(404).json({ mensagem: "Produto não encontrado" });
     }
+
+    const produtoComVinculoAoPedido = await knex('pedido_produtos').where('produto_id', id).first()
+
+    if (produtoComVinculoAoPedido) {
+      return res.status(400).json({ mensagem: "Não é possível excluir produto que está vinculado ao pedido" })
+    }
+
+    await excluirImagem(produtoEncontrado.produto_imagem)
+
+    await knex('produtos').where({ id }).update({ produto_imagem: null })
 
     const produtoExcluido = await knex("produtos").where({ id }).del();
 

@@ -27,7 +27,7 @@ const {
 const rotas = express();
 
 rotas.post("/usuario", validarRequisicao(usuarioSchema), cadastrarUsuario);
-rotas.get("/categorias", listarCategorias);
+rotas.get("/categoria", listarCategorias);
 rotas.post("/login", validarRequisicao(loginSchema), loginUsuario);
 
 rotas.use(validarToken);

@@ -45,15 +45,15 @@ CREATE TABLE produtos (
 
 CREATE TABLE pedidos (
 	id SERIAL PRIMARY KEY,
-  cliente_id INTEGER NOT NULL REFERENCES clientes(id),
+  cliente_id INTEGER REFERENCES clientes(id),
   observacao TEXT,
   valor_total INTEGER NOT NULL
 );
 
 CREATE TABLE pedido_produtos (
 	id SERIAL PRIMARY KEY,
-  pedido_id INTEGER NOT NULL REFERENCES pedidos(id),
-  produto_id INTEGER NOT NULL REFERENCES produtos(id),
+  pedido_id INTEGER REFERENCES pedidos(id),
+  produto_id INTEGER REFERENCES produtos(id),
   quantidade_produto INTEGER NOT NULL,
   valor_produto INTEGER NOT NULL
 );
