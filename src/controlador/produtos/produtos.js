@@ -1,5 +1,5 @@
 const knex = require("../../conexao");
-const excluirImagem = require("../../servicos-upload/uploadImagens");
+const { excluirImagem } = require("../../servicos-upload/uploadImagens");
 
 const editarDadosProduto = async (req, res) => {
   const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
