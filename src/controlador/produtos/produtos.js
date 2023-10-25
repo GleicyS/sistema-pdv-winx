@@ -25,9 +25,10 @@ const editarDadosProduto = async (req, res) => {
       .where({ produto_imagem })
       .first();
 
+    const existeImagem = existeProduto.produto_imagem;
+
     if (existeImagem) {
-      const produtoEncontrado = await knex("produtos").where({ id }).first();
-      await excluirImagem(produtoEncontrado.produto_imagem)
+      await excluirImagem(existeImagem);
     }
 
     const imagem = await uploadImagem(originalname, mimetype, buffer)
@@ -38,7 +39,7 @@ const editarDadosProduto = async (req, res) => {
       valor,
       categoria_id,
       produto_imagem: imagem.url
-    });
+    }).returning('*');
 
     if (produtoAtualizado === 0) {
       return res.status(400).json({ mensagem: "O produto não foi atualizado" });
