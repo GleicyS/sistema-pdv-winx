@@ -8,13 +8,13 @@ const html = `
   </head>
   <body style="font-family: sans-serif;">
     <div style="display: block; margin: auto; max-width: 600px;" class="main">
-      <h1 style="font-size: 18px; font-weight: bold; margin-top: 20px">Congrats for sending test email with Mailtrap!</h1>
-      <p>If you are viewing this email in your inbox – the integration works.</p>
-      <img alt="Inspect with Tabs" src="https://assets-examples.mailtrap.io/integration-examples/welcome.png" style="width: 100%;">
-      <p>Now send your email using our SMTP server and integration of your choice!</p>
-      <p>Good luck! Hope it works.</p>
+      <h1 style="font-size: 18px; font-weight: bold; margin-top: 20px">Seu pedido foi efetuado com sucesso!</h1>
+      <p>O seu pedido foi registrado com êxito em nosso sistema.</p>
+      <img alt="Pedido Efetuado" src="https://exemplo.com/imagem_pedido_cadastrado.png" style="width: 100%;">
+      <p>Obrigado por escolher nossos serviços.</p>
+      <p>Qualquer dúvida, entre em contato conosco.</p>
     </div>
-    <!-- Example of invalid for email html/css, will be detected by Mailtrap: -->
+    <!-- Estilos de exemplo, você pode personalizá-los conforme necessário -->
     <style>
       .main { background-color: white; }
       a:hover { border-left-width: 1em; min-height: 2em; }
@@ -23,7 +23,7 @@ const html = `
 </html>`;
 
 const enviarEmail = async (req, res) => {
-  const { para, assunto, html } = req.body;
+  const { para, assunto, corpo } = req.body;
 
   enviar(para, assunto, html);
 
