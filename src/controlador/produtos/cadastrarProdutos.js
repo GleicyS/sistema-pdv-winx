@@ -21,7 +21,7 @@ const cadastrarProduto = async (req, res) => {
                 valor,
                 categoria_id,
                 produto_imagem: imagem.url
-            })
+            }).returning('*')
 
         return res.status(201).json({ mensagem: 'Produto cadastrado com sucesso' })
     } catch (error) {
