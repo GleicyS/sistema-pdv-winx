@@ -17,11 +17,13 @@ const listarClientes = require("./controlador/clientes/listarClientes")
 const produtoSchema = require("./validacoes/produtoSchema");
 const cadastrarProduto = require("./controlador/produtos/cadastrarProdutos");
 const listarProdutos = require("./controlador/produtos/listarProdutos")
+const multer = require("./intermediarios/multer")
 
 const {
   editarDadosProduto,
   detalharProduto,
   excluirProduto,
+  atualizarImagemProduto,
 } = require("./controlador/produtos/produtos");
 const listarPedidos = require("./controlador/listarPedidos");
 
@@ -36,9 +38,11 @@ rotas.use(validarToken);
 rotas.get("/usuario", detalharUsuario);
 rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
 
-rotas.post("/produto", validarRequisicao(produtoSchema), cadastrarProduto);
+rotas.post("/produto", multer.single('imagem'), validarRequisicao(produtoSchema), cadastrarProduto);
 rotas.get("/produto", listarProdutos);
 rotas.put("/produto/:id", validarRequisicao(produtoSchema), editarDadosProduto);
+rotas.patch('/produto/:id/imagem', multer.single('imagem'), atualizarImagemProduto);
+
 rotas.get("/produto/:id", detalharProduto);
 rotas.delete("/produto/:id", excluirProduto);
 
