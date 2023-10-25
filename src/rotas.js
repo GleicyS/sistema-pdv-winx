@@ -38,7 +38,7 @@ rotas.put("/usuario", validarRequisicao(usuarioSchema), atualizarUsuario);
 
 rotas.post("/produto", validarRequisicao(produtoSchema), multer.single('imagem'), cadastrarProduto);
 rotas.get("/produto", listarProdutos);
-rotas.put("/produto/:id", validarRequisicao(produtoSchema), editarDadosProduto);
+rotas.put("/produto/:id", validarRequisicao(produtoSchema), multer.single('imagem'), editarDadosProduto);
 rotas.get("/produto/:id", detalharProduto);
 rotas.delete("/produto/:id", excluirProduto);
 
