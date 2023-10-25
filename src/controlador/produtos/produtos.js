@@ -1,9 +1,10 @@
 const knex = require("../../conexao");
-const excluirImagem = require("../../servicos-upload/uploadImagens");
+const { uploadImagem, excluirImagem } = require("../../)servicos-upload/uploadImagens");
 
 const editarDadosProduto = async (req, res) => {
   const { descricao, quantidade_estoque, valor, categoria_id } = req.body;
   const { id } = req.params;
+  const { originalname, mimetype, buffer } = req.file;
 
   try {
     const existeProduto = await knex("produtos").where({ id }).first();
@@ -20,11 +21,23 @@ const editarDadosProduto = async (req, res) => {
       return res.status(404).json({ mensagem: "Categoria não encontrada" });
     }
 
+    const existeImagem = await knex("produtos")
+      .where({ produto_imagem })
+      .first();
+
+    if (existeImagem) {
+      const produtoEncontrado = await knex("produtos").where({ id }).first();
+      await excluirImagem(produtoEncontrado.produto_imagem)
+    }
+
+    const imagem = await uploadImagem(originalname, mimetype, buffer)
+
     const produtoAtualizado = await knex("produtos").where({ id }).update({
       descricao,
       quantidade_estoque,
       valor,
       categoria_id,
+      produto_imagem: imagem.url
     });
 
     if (produtoAtualizado === 0) {
