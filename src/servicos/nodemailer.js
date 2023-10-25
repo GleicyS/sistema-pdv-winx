@@ -9,13 +9,13 @@ const transportador = nodemailer.createTransport({
   },
 });
 
-const enviar = (para, assunto, corpo) => {
-  transportador.sendMail({
-    from: process.env.EMAIL_FROM,
-    to: para,
-    subject: assunto,
-    html: corpo,
-  });
-};
+// const enviar = (para, assunto, corpo) => {
+//   transportador.sendMail({
+//     from: process.env.EMAIL_FROM,
+//     to: para,
+//     subject: assunto,
+//     html: corpo,
+//   });
+// };
 
-module.exports = enviar;
+module.exports = transportador;
