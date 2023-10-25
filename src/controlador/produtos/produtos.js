@@ -28,6 +28,7 @@ const editarDadosProduto = async (req, res) => {
     const existeImagem = existeProduto.produto_imagem;
 
     if (existeImagem) {
+
       await excluirImagem(existeImagem);
     }
 
