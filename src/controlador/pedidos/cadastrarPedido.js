@@ -1,7 +1,8 @@
 const knex = require("../../conexao");
+const transportador = require("../../servicos/nodemailer");
+const compiladorHTML = require("../../utils/compiladorHTML");
 
 const cadastrarPedido = async (req, res) => {
-  const { id } = req.usuario;
   const { cliente_id, observacao, pedido_produtos } = req.body;
 
   try {
@@ -40,17 +41,18 @@ const cadastrarPedido = async (req, res) => {
       });
       valorTotal += produtoExiste.valor * quantidade_produto;
     }
-    console.log(produtosValidos);
 
-    const [cadastroPedido] = await knex("pedidos")
+    const cadastroPedido = await knex("pedidos")
       .insert({
         cliente_id,
         observacao,
         valor_total: valorTotal,
       })
-      .returning("id");
+      .returning("*");
 
-    const pedidoId = cadastroPedido[0];
+    const pedidoId = Array.isArray(cadastroPedido)
+      ? cadastroPedido[0]
+      : cadastroPedido;
 
     if (!pedidoId) {
       //aqui que está dando erro, ao inserir o pedido_id na tabela pedido_produtos
@@ -68,7 +70,21 @@ const cadastrarPedido = async (req, res) => {
       });
     }
 
-    return res.status(201).json({ mensagem: "Pedido cadastrado com sucesso" });
+    const html = await compiladorHTML("./src/templates/pedidoEfetuado.html", {
+      nomeCliente: clienteExiste.nome,
+      numeroPedido,
+      valorTotal,
+      observacao,
+    });
+
+    transportador.sendMail({
+      from: `${process.env.EMAIL_NAME} <$process.env.EMAIL_FROM>`,
+      to: `${clienteExiste.nome} <$clienteExiste.email>`,
+      subject: "Pedido realizado com sucesso",
+      html,
+    });
+
+    return res.status(201).json({ mensagem: "Pedido realizado com sucesso" });
   } catch (error) {
     return res.status(500).json({
       mensagem: "Erro interno do servidor",
