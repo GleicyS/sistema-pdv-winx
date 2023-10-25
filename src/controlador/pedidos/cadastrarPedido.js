@@ -34,12 +34,13 @@ const cadastrarPedido = async (req, res) => {
       }
 
       produtosValidos.push({
-        produto_id: produtoExiste.produto_id,
+        produto_id: produtoExiste.id,
         quantidade_produto,
         valor_produto: produtoExiste.valor,
       });
       valorTotal += produtoExiste.valor * quantidade_produto;
     }
+    console.log(produtosValidos);
 
     const [cadastroPedido] = await knex("pedidos")
       .insert({
@@ -49,12 +50,19 @@ const cadastrarPedido = async (req, res) => {
       })
       .returning("id");
 
-    const pedidoId = cadastroPedido;
+    const pedidoId = cadastroPedido[0];
+
+    if (!pedidoId) {
+      //aqui que está dando erro, ao inserir o pedido_id na tabela pedido_produtos
+      return res.status(500).json({
+        mensagem: "Erro interno do servidor ao criar o pedido",
+      });
+    }
 
     for (const produto of produtosValidos) {
       await knex("pedido_produtos").insert({
         pedido_id: pedidoId,
-        produto_id,
+        produto_id: produto.produto_id,
         quantidade_produto: produto.quantidade_produto,
         valor_produto: produto.valor_produto,
       });
