@@ -25,8 +25,6 @@ const {
 const pedidoSchema = require("./validacoes/pedidoSchema");
 const cadastrarPedido = require("./controlador/pedidos/cadastrarPedido");
 
-const enviarEmail = require("./controlador/email");
-
 const rotas = express();
 
 rotas.post("/usuario", validarRequisicao(usuarioSchema), cadastrarUsuario);
@@ -50,6 +48,5 @@ rotas.put("/cliente/:id", validarRequisicao(clienteSchema), editarCliente);
 rotas.get("/cliente/:id", detalharCliente);
 
 rotas.post("/pedido", validarRequisicao(pedidoSchema), cadastrarPedido);
-rotas.post("/enviar", enviarEmail);
 
 module.exports = rotas;
