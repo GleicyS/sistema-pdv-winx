@@ -37,6 +37,7 @@ const cadastrarPedido = async (req, res) => {
       produtosValidos.push({
         produto_id: produtoExiste.id,
         quantidade_produto,
+        quantidade_estoque: produtoExiste.quantidade_estoque,
         valor_produto: produtoExiste.valor,
       });
       valorTotal += produtoExiste.valor * quantidade_produto;
@@ -55,7 +56,6 @@ const cadastrarPedido = async (req, res) => {
       : cadastroPedido;
 
     if (!pedidoId) {
-      //aqui que está dando erro, ao inserir o pedido_id na tabela pedido_produtos
       return res.status(500).json({
         mensagem: "Erro interno do servidor ao criar o pedido",
       });
@@ -63,23 +63,34 @@ const cadastrarPedido = async (req, res) => {
 
     for (const produto of produtosValidos) {
       await knex("pedido_produtos").insert({
-        pedido_id: pedidoId,
+        pedido_id: pedidoId.id,
         produto_id: produto.produto_id,
         quantidade_produto: produto.quantidade_produto,
         valor_produto: produto.valor_produto,
       });
+
+      await knex("produtos")
+        .update({
+          quantidade_estoque:
+            produto.quantidade_estoque - produto.quantidade_produto,
+        })
+        .where({ id: produto.produto_id });
     }
 
+    const formatarValor = Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
     const html = await compiladorHTML("./src/templates/pedidoEfetuado.html", {
-      nomeCliente: clienteExiste.nome,
-      numeroPedido,
-      valorTotal,
-      observacao,
+      nome: clienteExiste.nome,
+      numeroPedido: pedidoId.id,
+      valorTotal: formatarValor.format(valorTotal / 100),
     });
 
     transportador.sendMail({
-      from: `${process.env.EMAIL_NAME} <$process.env.EMAIL_FROM>`,
-      to: `${clienteExiste.nome} <$clienteExiste.email>`,
+      from: `${process.env.EMAIL_NAME} <${process.env.EMAIL_FROM}>`,
+      to: `${clienteExiste.nome} <${clienteExiste.email}>`,
       subject: "Pedido realizado com sucesso",
       html,
     });
