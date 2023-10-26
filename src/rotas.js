@@ -25,7 +25,7 @@ const {
   excluirProduto,
   atualizarImagemProduto,
 } = require("./controlador/produtos/produtos");
-const listarPedidos = require("./controlador/listarPedidos");
+const listarPedidos = require("./controlador/pedidos/listarPedidos");
 const pedidoSchema = require("./validacoes/pedidoSchema");
 const cadastrarPedido = require("./controlador/pedidos/cadastrarPedido");
 

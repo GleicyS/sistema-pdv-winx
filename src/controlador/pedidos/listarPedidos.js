@@ -1,4 +1,4 @@
-const knex = require("../conexao");
+const knex = require("../../conexao");
 
 const listarPedidos = async (req, res) => {
   try {
