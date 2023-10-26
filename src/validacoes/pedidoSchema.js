@@ -6,9 +6,7 @@ const pedidoSchema = joi.object({
     "number.base": "O campo cliente_id deve ser um number",
     "number.integer": "O campo cliente_id deve ser um número inteiro",
   }),
-  observacao: joi.allow(null, "").messages({
-    "string.empty": "O campo observação está vazio",
-  }),
+  observacao: joi.allow(null, ""),
   pedido_produtos: joi
     .array()
     .items(
