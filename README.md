@@ -129,3 +129,13 @@ A segunda sprint adiciona as tabelas "produtos" e "clientes" ao banco de dados.
 
 Este projeto é uma base sólida para um sistema de PDV e pode ser expandido com novas funcionalidades de acordo com as necessidades do negócio. Fique à vontade para contribuir e melhorar este projeto!
 
+
+## Colaboradores
+
+Este projeto foi desenvolvido em colaboração por:
+
+- [Gleicy](https://github.com/GleicyS)
+- [Lauane](https://github.com/lauanegcsilva)
+- [Rafaele](https://github.com/rafaellecriistine)
+- [Mariana](https://github.com/mar1tomaz)
+
